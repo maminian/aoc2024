@@ -14,7 +14,7 @@ l2.sort()
 print(sum([abs(l1[i]-l2[i]) for i in range(len(l1))]))
 
 # part 2 -- since lists are sorted, scan linearly
-# and drop when one list or the other is exhausted.
+# and stop when one list or the other is exhausted.
 # (similarity score is centered on list 1 but because 
 # they're sorted we're done once either list is exhausted)
 s=0
