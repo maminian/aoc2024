@@ -3,23 +3,29 @@ STDLIB_LIBS := `pkg-config --libs fortran_stdlib`
 
 # Example definition of Fortran compiler and flags
 FC := gfortran
-FFLAGS := -O3 -Wall -g
+FFLAGS := -O3 -g -Wcharacter-truncation -Wconversion -Wextra -Winteger-division -fbounds-check
 
 # 
-SUBROUTINES := hi.f90 dec01.f90
+SUBROUTINES := dec01.f90 dec02.f90
 
-make clean:
-	rm main hi dec01 *.o
+clean:
+	rm -f main
+	rm -f *.o
 
 main: main.f90
-	$(FC) $(SUBROUTINES) $< -o $@ $(FFLAGS) $(STDLIB_CFLAGS) 
+	$(FC) $(SUBROUTINES) $< -o $@ $(FFLAGS) $(STDLIB_CFLAGS) -lfortran_stdlib
+
+run:
+	./main
+
+reset: clean main run
 
 # Example rule to compile object files from .f90 files
 %.o: %.f90
-	$(FC) -c -o $@ $< $(FFLAGS) $(STDLIB_CFLAGS)
-
+	$(FC) -c -o $@ $< $(FFLAGS) $(STDLIB_CFLAGS) -lfortran_stdlib
+#$(FFLAGS) $(STDLIB_CFLAGS)
 %: %.o
-	$(FC) -o $@ $^ $(FFLAGS) $(STDLIB_LIBS)
+	$(FC) -o $@ $^ $(FFLAGS) $(STDLIB_CFLAGS) -lfortran_stdlib
 
 # If I need a reminder... https://makefiletutorial.com/
 #moo: moo.f90

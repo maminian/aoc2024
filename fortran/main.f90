@@ -1,12 +1,11 @@
-program main
-
+program aoc2024
 implicit none
 
-external :: hi
-external :: dec01
+external :: dec01,dec02
 
-call moo()
+!=================================
+
 call dec01()
+call dec02()
 
-end program main
-
+end program aoc2024
