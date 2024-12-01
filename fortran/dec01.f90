@@ -1,12 +1,10 @@
 subroutine dec01()
-!
 use stdlib_io
 use stdlib_sorting, only: sort
 
 implicit none
 
 integer :: u ! file reading buffer
-
 integer :: m,n,i,k
 integer :: part1=0
 integer :: part2=0
