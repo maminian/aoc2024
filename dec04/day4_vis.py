@@ -7,7 +7,7 @@ font = load_font(
    font_path="Atkinson-Hyperlegible-Regular-102.otf"
 )
 
-with open('input', 'r') as f:
+with open('input_mini', 'r') as f:
     fo = f.readlines()
     fo = [list(f.strip('\n')) for f in fo]
     m = len(fo)
