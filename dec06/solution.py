@@ -77,11 +77,13 @@ for p in range(m):
     for q in range(n):
         if fo[p,q]=='#' or (p,q)==(i0,j0):
             continue
-        # number of steps naively bounded by 2mn if not looping?
-        # Thinking: if +1, then a square was visited three times;
+        # number of steps naively bounded by 2mn if not in an orbit?
+        # Thinking: if 2mn+1, then a square was visited three times;
         # either passed through in the same direction twice (implies loop)
         # or passed in three independent directions (not possible...?)
-        loopcount += does_it_loop(p,q, fo, m*n*2)
-    print(p+1,m)
+        #
+        # could cut down slightly by number of obstructions.
+        loopcount += does_it_loop(p,q, fo, maxit=m*n*2)
+    print(p+1,'of',m)
 
 print(loopcount)
