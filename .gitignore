@@ -164,3 +164,7 @@ cython_debug/
 fortran-stdlib
 *.o
 main
+*.png
+*.otf
+*.woff
+*.mp4
