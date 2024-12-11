@@ -1,19 +1,17 @@
 
-import numpy as np
-import itertools
-
-with open('input', 'r') as f:
+with open('input_mini', 'r') as f:
     fo = f.readlines()
     fo = fo[0].strip().split(' ')
 
 _backup = list(fo)
-
 
 # 0->1
 # floor(log_{10}(i)) even -> split to two; one with "first half" of digits;
 # other with "second half"
 # else, x<-2024*x.
 def step(list_in, raw=False):
+    if isinstance(list_in,str):
+        list_in=[list_in]
     pre_out = []
     for s in list_in:
         k=len(s)
@@ -24,13 +22,15 @@ def step(list_in, raw=False):
         else:
             pre_out.append([str(int(s)*2024)])
     if not raw:
-        list_out = np.concatenate(pre_out)
+        #list_out = np.concatenate(pre_out)
+        list_out = sum(pre_out,[]) # concat lists
     else:
         list_out = pre_out
-    return list_out
+    return list(list_out)
 
 def mergesum(d1,d2):
-    '''merge two dictionaries assuming values are numerical; adding values of same key.'''
+    '''Merge two dictionaries assuming values are numerical; adding values of same key.
+    returns the new dictionary.'''
     d=dict(d1)
     for k,v in d2.items():
         if k in d.keys():
@@ -39,6 +39,18 @@ def mergesum(d1,d2):
             d[k]=v
     return d
 
+def fetch_or_lookup(_func, _memo, _input):
+    '''
+    Return lookup table result for function input if it exists; else call 
+    the function with the input. Dictionary will be updated.
+    '''
+    if _input in _memo.keys():
+        return _memo[_input]
+    else:
+        _output = _func(_input)
+        _memo[_input] = _output
+        return _output
+
 #################
 
 # part 1
@@ -46,30 +58,27 @@ for _ in range(25):
     fo=step(fo)
 print(len(fo))
 
-# part 2\
+# part 2
 # they talk about order... but it really doesn't matter.
 # need a "resetting" condition and a storage system.
 fo = list(_backup)
 counts = {fo[i]:1 for i in range(len(fo))}
 
 memo={}
-for u in range(75):
+for _ in range(75):
     to_add={}
 
     for k,num in counts.items():
         # if first time, then document stones created (memoize)
-        if k in memo:
-            doi=memo[k]
-        else:
-            doi=step([k])
-            memo[k]=doi
+        new_stones = fetch_or_lookup(step, memo, k)
         
         # make running tally of new stones created
-        for new_stone in doi:
-            if new_stone not in to_add.keys():
-                to_add[new_stone]=num
+        for ns in new_stones:
+            if ns not in to_add.keys():
+                to_add[ns]=num
             else:
-                to_add[new_stone]+=num
+                to_add[ns]+=num
+        
         # remove stones "destroyed" (or mapped)
         counts[k]-=num
     
