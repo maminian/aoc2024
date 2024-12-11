@@ -60,7 +60,7 @@ print(len(fo))
 
 # part 2
 # they talk about order... but it really doesn't matter.
-# need a "resetting" condition and a storage system.
+# need a storage system.
 fo = list(_backup)
 counts = {fo[i]:1 for i in range(len(fo))}
 
